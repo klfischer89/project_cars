@@ -33,3 +33,10 @@ model.fit(X_train, y_train)
 print(model.score(X_train, y_train))
 print(model.score(X_test, y_test))
 
+X_pred = pd.DataFrame([
+    [150000, 2000, "audi"],
+    [150000, 2000, "bmw"]
+], columns = ["kilometer", "yearOfRegistration", "brand"])
+
+print(model.predict(cf.transform(X_pred)))
+
