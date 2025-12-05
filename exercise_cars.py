@@ -14,12 +14,13 @@ df = df[df["notRepairedDamage"] == "nein"]
 df = df[(df["fuelType"] == "benzin") | (df["fuelType"] == "diesel") | (df["fuelType"] == "hybrid")]
 df.dropna(inplace = True)
 
-X = df[["kilometer", "yearOfRegistration", "brand", "gearbox", "fuelType"]]
+X = df[["kilometer", "yearOfRegistration", "brand", "gearbox", "fuelType", "powerPS"]]
 
 cf = ColumnTransformer([
     ("brand", OneHotEncoder(drop = "first"), ["brand"]),
     ("gearbox", OneHotEncoder(drop = "first"), ["gearbox"]),
-    ("fuelType", OneHotEncoder(drop = "first"), ["fuelType"])
+    ("fuelType", OneHotEncoder(drop = "first"), ["fuelType"]),
+    ("powerPS", OneHotEncoder(drop = "first"), ["powerPS"])
 ], remainder = "passthrough")
  
 cf.fit(X)
@@ -46,7 +47,7 @@ model = LinearRegression()
 model.fit(X_train, y_train)
 
 X_pred = pd.DataFrame([
-    [150000, 2000, "bmw", "automatik", "benzin"]
-], columns = ["kilometer", "yearOfRegistration", "brand", "gearbox", "fuelType"])
+    [150000, 2000, "bmw", "automatik", "benzin", 90]
+], columns = ["kilometer", "yearOfRegistration", "brand", "gearbox", "fuelType", "powerPS"])
 
 print(model.predict(cf.transform(X_pred)))
